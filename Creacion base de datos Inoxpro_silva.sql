@@ -1,0 +1,80 @@
+-- Creación de la base
+CREATE DATABASE Inoxpro_silva;
+USE Inoxpro_silva;
+
+-- Tables
+-- Tabla: ENVIO
+CREATE TABLE ENVIO (
+    id_envio INT NOT NULL,
+    envio_modalidad VARCHAR (30) NOT NULL,
+    CONSTRAINT PK_ENVIO PRIMARY KEY (id_envio)
+);
+
+-- Tabla: CLIENTE
+CREATE TABLE CLIENTE (
+    id_cliente INT NOT NULL,
+    nombre VARCHAR (180) NOT NULL,
+    email VARCHAR (240),
+    direccion VARCHAR (180) NOT NULL,
+    CONSTRAINT PK_CLIENTE PRIMARY KEY (id_cliente)
+);
+
+-- Tabla: DESTINO
+CREATE TABLE DESTINO (
+    id_destino INT NOT NULL,
+    nombre VARCHAR (180) NOT NULL,
+    email VARCHAR (240),
+    direccion VARCHAR (180) NOT NULL,
+    CONSTRAINT PK_DESTINO PRIMARY KEY (id_destino)
+);
+
+-- Tabla: PRODUCTO
+CREATE TABLE PRODUCTO (
+    id_producto INT NOT NULL,
+    producto_descripcion VARCHAR (40) NOT NULL,
+    id_categoria INT NOT NULL,
+    CONSTRAINT PK_PRODUCTO PRIMARY KEY (id_producto)
+);
+
+-- Tabla: CATEGORIA_PRODUCTO
+CREATE TABLE CATEGORIA_PRODUCTO (
+    id_categoria INT NOT NULL,
+    categoria_descripcion VARCHAR (40) NOT NULL,
+    CONSTRAINT PK_CATEGORIA_PRODUCTO PRIMARY KEY (id_categoria)
+);
+
+-- Tabla: VENTAS
+CREATE TABLE VENTAS (
+    id_pedido INT NOT NULL,
+    fecha_pedido DATE NOT NULL,
+    id_envio INT NOT NULL,
+    id_cliente INT NOT NULL,
+    id_destino INT NOT NULL,
+    id_producto INT NOT NULL,
+    producto_cantidad INT NOT NULL,
+    CONSTRAINT PK_VENTAS PRIMARY KEY (id_pedido)
+);
+
+-- FOREIIGN KEYS
+-- Referencia: FK_PRODUCTO_CATEGORIA_PRODUCTO (Tabla: PRODUCTO)
+ALTER TABLE PRODUCTO 
+ADD CONSTRAINT FK_PRODUCTO_CATEGORIA_PRODUCTO 
+FOREIGN KEY (id_categoria)
+REFERENCES CATEGORIA_PRODUCTO (id_categoria);
+
+-- Referencia: FK_VENTAS (Tabla: VENTAS)
+ALTER TABLE VENTAS 
+ADD CONSTRAINT FK_VENTAS_ENVIO
+FOREIGN KEY (id_envio)
+REFERENCES ENVIO (id_envio),
+ADD CONSTRAINT FK_VENTAS_CLIENTE 
+FOREIGN KEY (id_cliente)
+REFERENCES CLIENTE (id_cliente),
+ADD CONSTRAINT FK_VENTAS_DESTINO 
+FOREIGN KEY (id_destino)
+REFERENCES DESTINO (id_destino),
+ADD CONSTRAINT FK_VENTAS_PRODUCTO 
+FOREIGN KEY (id_producto)
+REFERENCES PRODUCTO (id_producto);
+    
+    
